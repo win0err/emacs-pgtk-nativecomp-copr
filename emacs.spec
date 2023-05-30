@@ -78,6 +78,9 @@ BuildRequires: jansson-devel
 BuildRequires: systemd-devel
 BuildRequires: lcms2-devel
 BuildRequires: systemd-rpm-macros
+BuildRequires: libtree-sitter-devel
+BuildRequires: libsqlite3x-devel
+BuildRequires: libwebp-devel
 
 BuildRequires: gtk3-devel
 BuildRequires: webkit2gtk3-devel
@@ -242,7 +245,8 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
             --with-tiff --with-xft --with-xpm --with-gpm=no \
             --with-xwidgets --with-modules --with-harfbuzz --with-cairo --with-json \
-            --with-pgtk --with-native-compilation --enable-link-time-optimization
+            --with-pgtk --with-native-compilation --enable-link-time-optimization \
+            --with-tree-sitter --with-sqlite3 --with-webp
 
 %make_build NATIVE_FULL_AOT=1 bootstrap
 %{setarch} %make_build
@@ -274,7 +278,8 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
            --with-tiff --with-xft --with-xpm --with-x-toolkit=lucid --with-gpm=no \
-           --with-modules --enable-link-time-optimization
+           --with-modules --enable-link-time-optimization \
+           --with-tree-sitter --with-sqlite3 --with-webp
 %make_build bootstrap
 %{setarch} %make_build
 cd ..
@@ -284,7 +289,8 @@ cd ..
 # Build binary without X support
 mkdir build-nox && cd build-nox
 ln -s ../configure .
-%configure --with-x=no --with-modules --enable-link-time-optimization
+%configure --with-x=no --with-modules --with-json --enable-link-time-optimization \
+           --with-tree-sitter --with-sqlite3
 %{setarch} %make_build
 cd ..
 %endif
